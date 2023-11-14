@@ -1,8 +1,8 @@
 import { Model, DataTypes, Optional } from 'sequelize';
-import sequelize from '../sequelize';
+import sequelize from '../config/sequelize';
 
 interface EstoqueAttributes {
-  estoqueId: number;
+  estoqueId: string;
   produtoId: number;
   quantidade: number;
 }
@@ -10,7 +10,7 @@ interface EstoqueAttributes {
 interface EstoqueCreationAttributes extends Optional<EstoqueAttributes, 'estoqueId'> {}
 
 class Estoque extends Model<EstoqueAttributes, EstoqueCreationAttributes> implements EstoqueAttributes {
-  public estoqueId!: number;
+  public estoqueId!: string;
   public produtoId!: number;
   public quantidade!: number;
 
@@ -21,15 +21,15 @@ class Estoque extends Model<EstoqueAttributes, EstoqueCreationAttributes> implem
 Estoque.init(
   {
     estoqueId: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
+      type: DataTypes.STRING,
       primaryKey: true,
     },
     produtoId: {
-        type: DataTypes.INTEGER
+        type: DataTypes.INTEGER,
+        primaryKey: true,
     },
     quantidade: {
-      type: DataTypes.number
+      type: DataTypes.INTEGER
     }
     // Outros atributos...
   },
