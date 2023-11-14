@@ -1,3 +1,4 @@
+
 import EstoqueRepository from '../repositories/EstoqueRespository'; // Importe o repositório Estoque corretamente
 
 export default class EstoqueService {
@@ -6,7 +7,12 @@ export default class EstoqueService {
   }
   static async criarRegistroDeEstoque(produtoId: number, quantidade: number, estoqueId: string) {
     return EstoqueRepository.criarRegistroDeEstoque(produtoId, quantidade, estoqueId);
+    
   }
+  static async deletarEstoque (produtoId: number, estoqueId: string) {
+    return EstoqueRepository.deletarEstoque(estoqueId, produtoId);
+  }
+
 }
 
 

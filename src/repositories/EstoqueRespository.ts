@@ -1,7 +1,6 @@
 import Estoque from '../models/Estoque';
 
 export default class VendaRepository {
-  // Cria uma nova venda no banco de dados
   static async criarRegistroDeEstoque(produtoId: number, quantidade: number, estoqueId: string): Promise<Estoque> {
     return await Estoque.create({ produtoId, quantidade, estoqueId});
   }
