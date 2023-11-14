@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql
+    container_name: meu-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: sua_senha
+    ports:
+      - "3306:3306"
