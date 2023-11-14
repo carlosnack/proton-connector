@@ -9,7 +9,7 @@ export default class VendaRepository {
     return await Estoque.create({ produtoId, quantidade, estoqueId })
   }
   static async buscarEstoquePorIds(estoqueId?: string, produtoId?: number) {
-    let whereCondition: any = {}
+    let whereCondition: any = {};
 
     if (estoqueId && produtoId) {
       whereCondition = {
