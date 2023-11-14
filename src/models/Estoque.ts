@@ -2,9 +2,9 @@ import { Model, DataTypes, Optional } from 'sequelize'
 import sequelize from '../config/sequelize'
 
 interface EstoqueAttributes {
-  estoqueId: string
-  produtoId: number
-  quantidade: number
+  estoqueId: string;
+  produtoId: number;
+  quantidade: number;
 }
 
 interface EstoqueCreationAttributes
@@ -14,9 +14,9 @@ class Estoque
   extends Model<EstoqueAttributes, EstoqueCreationAttributes>
   implements EstoqueAttributes
 {
-  public estoqueId!: string
-  public produtoId!: number
-  public quantidade!: number
+  public estoqueId!: string;
+  public produtoId!: number;
+  public quantidade!: number;
 
   // Aqui você define os relacionamentos e configurações do modelo
 }
@@ -42,4 +42,4 @@ Estoque.init(
   },
 )
 
-export default Estoque
+export default Estoque;
