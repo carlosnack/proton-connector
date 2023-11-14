@@ -10,10 +10,11 @@ sequelize
   .sync()
   .then(() => {
     console.log('Tabelas sincronizadas')
-    app.listen(port, () => {
+    app.listen(process.env.PORT, () => {
       console.log('Servidor rodando na porta 3000')
     })
   })
   .catch((error) => {
-    console.error('Erro ao sincronizar tabelas:', error)
+    console.error('Erro ao sincronizar tabelas:', error);
+    process.exit(1);
   })

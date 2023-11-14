@@ -1,14 +1,14 @@
-import Estoque from '../models/Estoque'
+import Usuario from '../models/Usuario'
 
-export default class EstoqueRepository {
-  static async criarRegistroDeEstoque(
+export default class UsuarioRepository {
+  static async criarRegistroDeUsuario(
     produtoId: number,
     quantidade: number,
     estoqueId: string,
-  ): Promise<Estoque> {
-    return await Estoque.create({ produtoId, quantidade, estoqueId })
+  ): Promise<Usuario> {
+    return await Usuario.create({ produtoId, quantidade, estoqueId })
   }
-  static async buscarEstoquePorIds(estoqueId?: string, produtoId?: number) {
+  static async buscarUsuarioPorIds(estoqueId?: string, produtoId?: number) {
     let whereCondition: any = {};
 
     if (estoqueId && produtoId) {
@@ -23,7 +23,7 @@ export default class EstoqueRepository {
     }
 
     try {
-      const result = await Estoque.findAll({ where: whereCondition })
+      const result = await Usuario.findAll({ where: whereCondition })
       return result
     } catch (error) {
       throw new Error(`Erro ao buscar estoque: ${error}`)
@@ -31,11 +31,11 @@ export default class EstoqueRepository {
   }
 
   // Deleta uma venda do banco de dados
-  static async deletarEstoque(
+  static async deletarUsuario(
     estoqueId: string,
     produtoId: number,
   ): Promise<number> {
-    return Estoque.destroy({ where: { estoqueId, produtoId } })
+    return Usuario.destroy({ where: { estoqueId, produtoId } })
   }
 
   // Outras operações relacionadas à entidade "Venda" podem ser adicionadas aqui
