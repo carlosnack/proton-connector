@@ -4,9 +4,9 @@ import sequelize from '../config/sequelize'
 interface UsuarioAttributes {
   userID: number;
   name: number;
-  password: string;
   passwordHash: string;
   email: string;
+  active: boolean;
 }
 
 interface UsuarioCreationAttributes
@@ -17,9 +17,9 @@ class Usuario
   implements UsuarioAttributes {
   public userID!: number;
   public name!: number;
-  public password!: string;
   public passwordHash!: string;
   public email!: string;
+  public active!: boolean;
 
   // Aqui você define os relacionamentos e configurações do modelo
 }
@@ -34,14 +34,14 @@ Usuario.init(
     name: {
       type: DataTypes.INTEGER,
     },
-    password: {
-      type: DataTypes.STRING,
-    },
     email: {
       type: DataTypes.STRING,
     },
     passwordHash: {
       type: DataTypes.STRING,
+    },
+    active: {
+      type: DataTypes.BOOLEAN,
     }
   },
   {

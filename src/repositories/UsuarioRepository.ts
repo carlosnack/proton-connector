@@ -1,26 +1,52 @@
+import AuthException from '../exceptions/AuthException';
 import Usuario from '../models/Usuario'
+import bcrypt from 'bcrypt'
+import * as jwt from 'jsonwebtoken';
 
 export default class UsuarioRepository {
   static async criarRegistroDeUsuario(
     userID: number,
     name: number,
     password: string,
-    passwordHash: string,
     email: string,
-  ): Promise<Usuario> {
-    return await Usuario.create({
+    active: boolean,
+  ) {
+    const saltRounds = 10; // Número de rounds de "salting" - quanto maior, mais seguro, mas mais lento
+    const salt = await bcrypt.genSalt(saltRounds);
+    const passwordHash = await bcrypt.hash(password, salt);
+    const user =  await Usuario.create({
       userID,
       name,
-      password,
       passwordHash,
       email,
-    })
+      active,
+    });
+    Reflect.deleteProperty(user, 'passwordHash');
+    return user;
+
   }
   static async signIn(
     password: string,
     email: string) {
 
+    const where = { email };
 
+    const user = await Usuario.findOne({ where });
+    if (!user) {
+      throw new AuthException(AuthException.LoginDontExists);
+    }
+    if (!(await bcrypt.compare(password, user.passwordHash))) {
+      throw new AuthException(AuthException.LoginPasswordNotAllowed);
+    }
+    Reflect.deleteProperty(user, 'passwordHash');
+    return {
+      payload: {
+        ...user,
+      },
+      token: jwt.sign({ ...user }, 'jwtSecretKey', {
+        expiresIn: '1d',
+      }),
+    };
   }
   static async buscarUsuario(userID?: number,
     name?: number,
