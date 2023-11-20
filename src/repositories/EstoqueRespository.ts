@@ -29,14 +29,10 @@ export default class EstoqueRepository {
       throw new Error(`Erro ao buscar estoque: ${error}`)
     }
   }
-
-  // Deleta uma venda do banco de dados
   static async deletarEstoque(
     estoqueId: string,
     produtoId: number,
   ): Promise<number> {
     return Estoque.destroy({ where: { estoqueId, produtoId } })
   }
-
-  // Outras operações relacionadas à entidade "Venda" podem ser adicionadas aqui
 }

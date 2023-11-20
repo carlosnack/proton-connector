@@ -2,41 +2,51 @@ import Usuario from '../models/Usuario'
 
 export default class UsuarioRepository {
   static async criarRegistroDeUsuario(
-    produtoId: number,
-    quantidade: number,
-    estoqueId: string,
+    userID: number,
+    name: number,
+    password: string,
+    passwordHash: string,
+    email: string,
   ): Promise<Usuario> {
-    return await Usuario.create({ produtoId, quantidade, estoqueId })
+    return await Usuario.create({
+      userID,
+      name,
+      password,
+      passwordHash,
+      email,
+    })
   }
-  static async buscarUsuarioPorIds(estoqueId?: string, produtoId?: number) {
+  static async signIn(
+    password: string,
+    email: string) {
+
+
+  }
+  static async buscarUsuario(userID?: number,
+    name?: number,
+    email?: string,) {
     let whereCondition: any = {};
 
-    if (estoqueId && produtoId) {
-      whereCondition = {
-        estoqueId,
-        produtoId,
-      }
-    } else if (estoqueId) {
-      whereCondition = { estoqueId }
-    } else if (produtoId) {
-      whereCondition = { produtoId }
+    if (userID) {
+      Object.assign(whereCondition, userID);
+    }
+    if (name) {
+      Object.assign(whereCondition, name);
+    }
+    if (email) {
+      Object.assign(whereCondition, email);
     }
 
     try {
       const result = await Usuario.findAll({ where: whereCondition })
       return result
     } catch (error) {
-      throw new Error(`Erro ao buscar estoque: ${error}`)
+      throw new Error(`Erro ao buscar usuário: ${error}`)
     }
   }
-
-  // Deleta uma venda do banco de dados
   static async deletarUsuario(
-    estoqueId: string,
-    produtoId: number,
+    userID: string,
   ): Promise<number> {
-    return Usuario.destroy({ where: { estoqueId, produtoId } })
+    return Usuario.destroy({ where: { userID } })
   }
-
-  // Outras operações relacionadas à entidade "Venda" podem ser adicionadas aqui
 }

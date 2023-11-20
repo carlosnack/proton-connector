@@ -5,19 +5,20 @@ interface UsuarioAttributes {
   userID: number;
   name: number;
   password: string;
+  passwordHash: string;
   email: string;
 }
 
 interface UsuarioCreationAttributes
-  extends Optional<UsuarioAttributes, 'userID'> {}
+  extends Optional<UsuarioAttributes, 'userID'> { }
 
 class Usuario
   extends Model<UsuarioAttributes, UsuarioCreationAttributes>
-  implements UsuarioAttributes
-{
+  implements UsuarioAttributes {
   public userID!: number;
   public name!: number;
   public password!: string;
+  public passwordHash!: string;
   public email!: string;
 
   // Aqui você define os relacionamentos e configurações do modelo
@@ -36,10 +37,12 @@ Usuario.init(
     password: {
       type: DataTypes.STRING,
     },
-    email : {
-        type: DataTypes.STRING,
+    email: {
+      type: DataTypes.STRING,
+    },
+    passwordHash: {
+      type: DataTypes.STRING,
     }
-    // Outros atributos...
   },
   {
     sequelize,
