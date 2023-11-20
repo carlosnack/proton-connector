@@ -1,4 +1,6 @@
+import { connected } from 'process';
 import AuthException from '../exceptions/AuthException';
+import GenericException from '../exceptions/GenericException';
 import Usuario from '../models/Usuario'
 import bcrypt from 'bcrypt'
 import * as jwt from 'jsonwebtoken';
@@ -11,23 +13,28 @@ export default class UsuarioRepository {
     email: string,
     active: boolean,
   ) {
-    const saltRounds = 10; // Número de rounds de "salting" - quanto maior, mais seguro, mas mais lento
-    const salt = await bcrypt.genSalt(saltRounds);
-    const passwordHash = await bcrypt.hash(password, salt);
-    const user =  await Usuario.create({
-      userID,
-      name,
-      passwordHash,
-      email,
-      active,
-    });
-    Reflect.deleteProperty(user, 'passwordHash');
-    return user;
+    try {
+      const saltRounds = 10; // Número de rounds de "salting" - quanto maior, mais seguro, mas mais lento
+      const salt = await bcrypt.genSalt(saltRounds);
+      const passwordHash = await bcrypt.hash(password, salt);
+      const user = await Usuario.create({
+        userID,
+        name,
+        passwordHash,
+        email,
+        active,
+      });
+      Reflect.deleteProperty(user, 'passwordHash');
+      return user;
 
+    } catch (e) {
+      throw new GenericException({ name: "errorUserCreation", message: "Error during user creation", statusCode: 500 });
+    }
   }
+    
   static async signIn(
-    password: string,
-    email: string) {
+      password: string,
+      email: string) {
 
     const where = { email };
 
@@ -64,10 +71,10 @@ export default class UsuarioRepository {
     }
 
     try {
-      const result = await Usuario.findAll({ where: whereCondition })
-      return result
+      const result = await Usuario.findAll({ where: whereCondition });
+      return result;
     } catch (error) {
-      throw new Error(`Erro ao buscar usuário: ${error}`)
+      throw new GenericException({ name: "userNotFound", message: "User with where conditions not found", statusCode: 404 });
     }
   }
   static async deletarUsuario(

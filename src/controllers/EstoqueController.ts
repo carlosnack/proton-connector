@@ -2,6 +2,7 @@
 import { Request, Response } from 'express'
 import { validationResult } from 'express-validator'
 import EstoqueService from '../services/EstoqueService' // Importe o serviço EstoqueService corretamente
+import { decodeToken } from '../utils/decodeToken'
 
 export default class EstoqueController {
   //PARA EU DO FUTURO: REVISAR RETORNOS DE ERROS
@@ -46,6 +47,7 @@ export default class EstoqueController {
   }
 
   static async criarRegistroDeEstoque(req: Request, res: Response) {
+    const { userID } = decodeToken(req.headers.authorization as string);
     const { estoqueId, produtoId, quantidade } = req.query
 
     try {
