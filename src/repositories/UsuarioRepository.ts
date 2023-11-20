@@ -8,7 +8,7 @@ import * as jwt from 'jsonwebtoken';
 export default class UsuarioRepository {
   static async criarRegistroDeUsuario(
     userID: number,
-    name: number,
+    name: string,
     password: string,
     email: string,
     active: boolean,
@@ -26,7 +26,6 @@ export default class UsuarioRepository {
       });
       Reflect.deleteProperty(user, 'passwordHash');
       return user;
-
     } catch (e) {
       throw new GenericException({ name: "errorUserCreation", message: "Error during user creation", statusCode: 500 });
     }

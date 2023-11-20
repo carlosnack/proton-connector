@@ -1,7 +1,7 @@
 // controller/EstoqueController.ts
 import { Request, Response } from 'express'
 import { validationResult } from 'express-validator'
-import EstoqueService from '../services/EstoqueService' // Importe o serviço EstoqueService corretamente
+import EstoqueService from '../services/EstoqueService'
 import { decodeToken } from '../utils/decodeToken'
 
 export default class EstoqueController {

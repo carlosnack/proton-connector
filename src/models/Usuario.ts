@@ -3,7 +3,7 @@ import sequelize from '../config/sequelize'
 
 interface UsuarioAttributes {
   userID: number;
-  name: number;
+  name: string;
   passwordHash: string;
   email: string;
   active: boolean;
@@ -16,7 +16,7 @@ class Usuario
   extends Model<UsuarioAttributes, UsuarioCreationAttributes>
   implements UsuarioAttributes {
   public userID!: number;
-  public name!: number;
+  public name!: string;
   public passwordHash!: string;
   public email!: string;
   public active!: boolean;
@@ -32,7 +32,7 @@ Usuario.init(
       autoIncrement: true
     },
     name: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
     },
     email: {
       type: DataTypes.STRING,
