@@ -7,8 +7,9 @@ import UsuarioController from '../controllers/UsuarioController'
 const router = express.Router()
 
 router.get('/estoque', query(buscarEstoqueValidation), EstoqueController.buscarEstoque)
-router.delete('/estoque/delete', EstoqueController.deletarEstoque)
+router.delete('/estoque', EstoqueController.deletarEstoque)
 router.post('/estoque', EstoqueController.criarRegistroDeEstoque)
 router.post('/usuario', UsuarioController.criarRegistroDeUsuario)
+router.post('/auth', UsuarioController.signIn)
 
 export default router

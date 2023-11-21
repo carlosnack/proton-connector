@@ -5,4 +5,7 @@ export default class UsuarioService {
     static async criarRegistroDeUsuario(userID: number, name: string, password: string, email: string, active: boolean) {
         return UsuarioRepository.criarRegistroDeUsuario(userID, name, password, email, active);
     }
+    static async signIn(password: string, email: string) {
+        return UsuarioRepository.signIn(password, email);
+    }
 }
