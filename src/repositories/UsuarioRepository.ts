@@ -29,7 +29,7 @@ export default class UsuarioRepository {
       throw new GenericException({ name: "errorUserCreation", message: "Error during user creation", statusCode: 500 });
     }
   }
-    
+
   static async signIn(
       password: string,
       email: string) {

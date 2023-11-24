@@ -32,11 +32,12 @@
     "sequelize": "^6.35.0",
     "sequelize-cli": "^6.6.2",
     "sequelize-pool": "^7.1.0",
-    "sequelize-typescript": "^2.1.5"
+    "sequelize-typescript": "^2.1.5",
+    "ts-node-dev": "^2.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node src/index.ts"
+    "dev": "ts-node-dev --no-notify src/index.ts"
   },
   "keywords": [],
   "author": "",
