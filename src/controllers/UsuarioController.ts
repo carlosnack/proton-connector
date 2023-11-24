@@ -21,7 +21,7 @@ export default class UsuarioController {
         }
         const {password, email} = req.query;
         const userLogin = await UsuarioService.signIn(password as string, email as string);
-        res.status(200).json({ userLogin });
+        res.status(200).json( userLogin );
     }
 
 }

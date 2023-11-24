@@ -2,7 +2,7 @@ import { connected } from 'process';
 import AuthException from '../exceptions/AuthException';
 import GenericException from '../exceptions/GenericException';
 import Usuario from '../models/Usuario'
-import bcrypt from 'bcryptjs'
+import * as bcrypt from 'bcryptjs'
 import * as jwt from 'jsonwebtoken';
 
 export default class UsuarioRepository {
@@ -18,13 +18,12 @@ export default class UsuarioRepository {
       const salt = await bcrypt.genSalt(saltRounds);
       const passwordHash = await bcrypt.hash(password, salt);
       const user = await Usuario.create({
-        userID,
         name,
         passwordHash,
         email,
         active,
       });
-      Reflect.deleteProperty(user, 'passwordHash');
+      Reflect.deleteProperty(user, passwordHash);
       return user;
     } catch (e) {
       throw new GenericException({ name: "errorUserCreation", message: "Error during user creation", statusCode: 500 });
