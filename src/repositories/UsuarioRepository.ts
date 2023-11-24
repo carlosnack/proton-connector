@@ -2,7 +2,7 @@ import { connected } from 'process';
 import AuthException from '../exceptions/AuthException';
 import GenericException from '../exceptions/GenericException';
 import Usuario from '../models/Usuario'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import * as jwt from 'jsonwebtoken';
 
 export default class UsuarioRepository {
@@ -30,7 +30,7 @@ export default class UsuarioRepository {
       throw new GenericException({ name: "errorUserCreation", message: "Error during user creation", statusCode: 500 });
     }
   }
-    
+
   static async signIn(
       password: string,
       email: string) {

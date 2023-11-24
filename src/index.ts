@@ -1,20 +1,15 @@
 import express from "express";
-import router from "./router/router";
 import sequelize from "./config/sequelize";
 import cors from "cors";
 import { json } from "body-parser";
 import { exception } from "./utils/exception";
 import { notFound } from "./utils/notFound";
-
-const app = express();
-app.use(cors());
-app.use(json());
+import { readdirSync } from "fs";
+import { join } from "path";
+import app from "./app";
 
 const port = 3000;
-app.use("/api", router); // Use o controlador para a rota '/api/estoque'
 
-app.use(exception);
-app.use(notFound);
 sequelize
   .sync()
   .then(() => {
