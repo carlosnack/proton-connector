@@ -42,9 +42,4 @@ router.delete(
   endpoint(DespesaController.deletarDespesa)
 );
 
-router.get(
-    "/despesas/:status",
-    endpoint(DespesaController.calcularTotal)
-  );
-
 export default router;

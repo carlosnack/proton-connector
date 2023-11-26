@@ -37,28 +37,24 @@ export default class DespesaRepository {
       where: { despesaId },
     });
   }
-
-  static async calcularTotal(status: boolean): Promise<number> {
-    const total = await Despesa.sum('valor', {
-      where: { status },
-    });
-
-    return total || 0;
-  }
-
+  
   static async buscarDespesasPorIntervalo(
     dataCriacao?: Date,
-    dataVencimento?: Date
-  ): Promise<{ despesas: Despesa[]; total: number }> {
-    const condition: any = {};
-
+    dataVencimento?: Date,
+    status: boolean = false
+  ): Promise<{ total: number }> {
+    const condition: any = {
+      status, // Utiliza o status passado como condição
+    };
+  
     if (dataCriacao) condition.data_criacao = { [Op.gte]: dataCriacao };
     if (dataVencimento) condition.data_vencimento = { [Op.lte]: dataVencimento };
-
-    const despesas = await Despesa.findAll({ where: condition });
+  
     const total = await Despesa.sum('valor', { where: condition });
-
-    return { despesas, total: total || 0 };
+  
+    return { total: total || 0 };
   }
+  
+  
 
 }
