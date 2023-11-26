@@ -4,13 +4,14 @@ export const criarDespesaValidation = Joi.object({
   descricao: Joi.string().required(),
   valor: Joi.number().greater(0).required(),
   data_vencimento: Joi.date().required(),
-  status: Joi.boolean(),
+  status: Joi.boolean().optional(), 
 }).required();
 
 export const buscarDespesasValidation = Joi.object({
   descricao: Joi.string(),
   dataCriacao: Joi.date(),
   dataVencimento: Joi.date(),
+  status: Joi.boolean().optional(), 
 }).required();
 
 export const acessarDespesaValidation = Joi.object({
@@ -21,5 +22,5 @@ export const atualizarDespesaValidation = Joi.object({
   descricao: Joi.string(),
   valor: Joi.number().greater(0),
   data_vencimento: Joi.date(),
-  status: Joi.boolean(),
+  status: Joi.boolean().optional(),
 }).required();

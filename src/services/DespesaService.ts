@@ -38,14 +38,11 @@ export default class DespesaService {
     return await DespesaRepository.deletarDespesa(despesaId);
   }
 
-  static async calcularTotal(status: boolean) {
-    return DespesaRepository.calcularTotal(status);
-  }
-
   static async buscarDespesasPorIntervalo(
     dataCriacao?: Date,
-    dataVencimento?: Date
+    dataVencimento?: Date,
+    status?: boolean
   ) {
-    return DespesaRepository.buscarDespesasPorIntervalo(dataCriacao, dataVencimento);
+    return DespesaRepository.buscarDespesasPorIntervalo(dataCriacao, dataVencimento, status);
   }
 }

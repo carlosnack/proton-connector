@@ -11,9 +11,9 @@ export default class DespesaController {
   }
 
   static async buscarDespesas(req: Request, res: Response) {
-    const { descricao, dataCriacao, dataVencimento } = req.query as Record<string, any>;
+    const { descricao, dataCriacao, dataVencimento, status } = req.query as Record<string, any>;
 
-    const despesas = await DespesaService.buscarDespesasPorIntervalo(dataCriacao, dataVencimento);
+    const despesas = await DespesaService.buscarDespesasPorIntervalo(dataCriacao, dataVencimento, status);
     return res.status(200).json({ despesas });
   }
 
@@ -39,13 +39,5 @@ export default class DespesaController {
     await DespesaService.deletarDespesa(despesaId);
 
     return res.status(204).send();
-  }
-
-  static async calcularTotal(req: Request, res: Response) {
-    const { status } = req.query as Record<string, any>;
-
-    const total = await DespesaService.calcularTotal(status);
-
-    return res.status(200).json({ total });
   }
 }
