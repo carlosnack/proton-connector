@@ -1,5 +1,6 @@
 import { Model, DataTypes, Optional } from "sequelize";
 import sequelize from "../config/sequelize";
+import Venda from "./Venda";
 
 export interface ClienteAttributes {
   clienteId?: number;
@@ -30,6 +31,12 @@ class Cliente
   public numero!: string;
   public deleted!: boolean;
   // Aqui você define os relacionamentos e configurações do modelo
+  public static associate(models: any): void {
+    Cliente.hasMany(models.Venda, {
+      foreignKey: "clienteId",
+      as: "vendas",
+    });
+  }
 }
 
 Cliente.init(

@@ -33,4 +33,10 @@ export default class ProdutoRepository {
 
     return affectedRows;
   }
+
+  static async buscarProdutosIds(produtosIds: number[]): Promise<Produto[]> {
+    return await Produto.findAll({
+      where: { produtoId: { [Op.in]: produtosIds } },
+    });
+  }
 }
