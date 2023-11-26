@@ -10,6 +10,13 @@ import app from "./app";
 
 const port = 3000;
 
+
+// Isso é para fazer as relações dos modelos
+Object.values(sequelize.models).forEach((model: any) => {
+  if (model?.associate) {
+    model.associate(sequelize.models);
+  }
+});
 sequelize
   .sync()
   .then(() => {

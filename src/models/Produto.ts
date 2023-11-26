@@ -1,5 +1,6 @@
 import { Model, DataTypes, Optional } from "sequelize";
 import sequelize from "../config/sequelize";
+import VendaProduto from "./VendaProduto";
 
 interface ProdutoAttributes {
   produtoId: number;
@@ -21,7 +22,15 @@ class Produto
   public descricao!: string;
   public preco!: number;
   public deleted!: boolean;
-  // Aqui você define os relacionamentos e configurações do modelo
+
+  public static associate(models: any): void {
+    Produto.belongsToMany(models.Venda, {
+      through: VendaProduto,
+      foreignKey: "produtoId",
+      otherKey: "vendaId",
+      as: "vendas",
+    });
+  }
 }
 
 Produto.init(
