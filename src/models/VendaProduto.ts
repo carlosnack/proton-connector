@@ -66,6 +66,9 @@ VendaProduto.init(
           }
         },
       },
+      get() {
+        return parseFloat(this.getDataValue("precoUnitario" as any));
+      },
     },
     deleted: {
       type: DataTypes.BOOLEAN,

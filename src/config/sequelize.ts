@@ -1,10 +1,24 @@
 import { Sequelize } from "sequelize";
-import Venda from "../models/Venda";
+import dotenv from "dotenv-safe";
+dotenv.config();
 
-const sequelize = new Sequelize("mysql", "root", "sua_senha", {
-  host: "localhost",
-  dialect: "mysql",
-});
+const bdConfig: any = {
+  database: process.env.POSTGRES_DB,
+  user: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+};
 
+const sequelize = new Sequelize(
+  bdConfig.database,
+  bdConfig.user,
+  bdConfig.password,
+  {
+    host: "localhost",
+    dialect: "postgres",
+    dialectOptions: {
+      decimalNumbers: true,
+    },
+  }
+);
 
 export default sequelize;

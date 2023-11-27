@@ -1,7 +1,8 @@
-import sequelize from "./config/sequelize";
-import app from "./app";
 import dotenv from "dotenv-safe";
 dotenv.config();
+
+import sequelize from "./config/sequelize";
+import app from "./app";
 
 const port = process.env.PORT || 3000;
 

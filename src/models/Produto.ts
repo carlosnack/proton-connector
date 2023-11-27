@@ -51,6 +51,9 @@ Produto.init(
     preco: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
+      get() {
+        return parseFloat(this.getDataValue("preco" as any));
+      },
     },
     deleted: {
       type: DataTypes.BOOLEAN,
