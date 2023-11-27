@@ -1,6 +1,4 @@
 import { Sequelize } from "sequelize";
-import dotenv from "dotenv-safe";
-dotenv.config();
 
 const bdConfig: any = {
   database: process.env.POSTGRES_DB,
