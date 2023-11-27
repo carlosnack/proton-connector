@@ -1,6 +1,5 @@
 import { Op } from "sequelize";
 import Produto from "../models/Produto";
-import { HttpError } from "../utils/httpError";
 
 export default class ProdutoRepository {
   static async criarProduto(
