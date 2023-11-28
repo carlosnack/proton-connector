@@ -1,6 +1,5 @@
 import { Op } from "sequelize";
 import Produto from "../models/Produto";
-import { HttpError } from "../utils/httpError";
 
 export default class ProdutoRepository {
   static async criarProduto(
@@ -32,5 +31,11 @@ export default class ProdutoRepository {
     });
 
     return affectedRows;
+  }
+
+  static async buscarProdutosIds(produtosIds: number[]): Promise<Produto[]> {
+    return await Produto.findAll({
+      where: { produtoId: { [Op.in]: produtosIds } },
+    });
   }
 }

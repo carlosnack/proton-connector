@@ -1,10 +1,20 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  db:
-    image: mysql
-    container_name: meu-mysql
+  postgres:
+    image: postgres:alpine
+    command: -p $POSTGRES_PORT
     environment:
-      MYSQL_ROOT_PASSWORD: sua_senha
+      - PGDATA=/var/lib/postgresql/data
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+      - POSTGRES_DB=$POSTGRES_DB
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
     ports:
-      - "3306:3306"
+      - $POSTGRES_PORT:$POSTGRES_PORT
+    restart: always
+    volumes:
+      - ./data:/var/lib/postgresql/data

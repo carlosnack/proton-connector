@@ -3,20 +3,27 @@ import Cliente, { ClienteCreationAttributes } from "../models/Cliente";
 
 export default class ClienteRepository {
   static async criarCliente(
-    cliente: ClienteCreationAttributes
+    cliente: ClienteCreationAttributes,
+    latitude: number,
+    longitude: number
   ): Promise<Cliente> {
-    return await Cliente.create(cliente, {
-      returning: [
-        "clienteId",
-        "nome",
-        "email",
-        "cnpj",
-        "cpf",
-        "cep",
-        "endereco",
-        "numero",
-      ],
-    });
+    return await Cliente.create(
+      { ...cliente, latitude, longitude },
+      {
+        returning: [
+          "clienteId",
+          "nome",
+          "email",
+          "cnpj",
+          "cpf",
+          "cep",
+          "endereco",
+          "numero",
+          "latitude",
+          "longitude",
+        ],
+      }
+    );
   }
 
   static async buscarCliente(nome?: string, cnpj?: string): Promise<Cliente[]> {

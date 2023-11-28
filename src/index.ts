@@ -1,15 +1,17 @@
-import express from "express";
+import dotenv from "dotenv-safe";
+dotenv.config();
+
 import sequelize from "./config/sequelize";
-import cors from "cors";
-import { json } from "body-parser";
-import { exception } from "./utils/exception";
-import { notFound } from "./utils/notFound";
-import { readdirSync } from "fs";
-import { join } from "path";
 import app from "./app";
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 
+// Isso é para fazer as relações dos modelos
+Object.values(sequelize.models).forEach((model: any) => {
+  if (model?.associate) {
+    model.associate(sequelize.models);
+  }
+});
 sequelize
   .sync()
   .then(() => {
