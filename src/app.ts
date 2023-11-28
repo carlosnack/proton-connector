@@ -5,6 +5,7 @@ import { readdirSync } from "fs";
 import { join } from "path";
 import { exception } from "./utils/exception";
 import { notFound } from "./utils/notFound";
+import CronService from "./services/CronService";
 
 const app = express();
 
@@ -22,5 +23,7 @@ for (const route of routes) {
 
 app.use(exception);
 app.use(notFound);
+
+CronService.setUpdateStatusCron();
 
 export default app;
