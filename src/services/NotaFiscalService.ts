@@ -18,9 +18,6 @@ export default class NotaFiscalService {
     return NotaFiscalRepository.criarNotaFiscal(valor, dataEmissao);
   }
 
-  /**
-   * TODO: Save NF file
-   */
   static async gerarPdfNotaFiscal({
     nomeCliente,
     dataEmissao,

@@ -13,7 +13,6 @@ interface PagamentoTokenProps {
 }
 
 export default class PagamentoController {
-  // TODO add cliente email to efetuar pagamento body to ensure that person who's acessing the link is the right client
   static async efetuarPagamento(req: Request, res: Response) {
     const { token } = req.params as Record<string, any>;
     const decoded = JwtService.decode<PagamentoTokenProps>(token);

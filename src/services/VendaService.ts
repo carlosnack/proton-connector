@@ -34,13 +34,6 @@ export default class VendaService {
     produtos: CriarVendaProdutosProps,
     pagamento: CriarVendaPagamentoProps
   ) {
-    /**
-     * TODO: Gerar Nota fiscal(Isso vai ficar no pagamento)
-     * TODO: Enviar email com nota fiscal
-     * TODO: Enviar email com método de pagamento para o cliente
-     * TODO: Criar rota na API para processar o pagamento
-     */
-
     const t = await sequelize.transaction();
 
     const produtosFound = await Promise.all(
