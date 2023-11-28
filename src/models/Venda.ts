@@ -10,6 +10,8 @@ interface VendaAttributes {
   entregaId: number;
   dataVenda: Date;
   deleted?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 interface VendaCreationAttributes

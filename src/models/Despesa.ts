@@ -8,9 +8,12 @@ interface DespesaAttributes {
   data_vencimento: Date;
   data_criacao: Date;
   status: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
-interface DespesaCreationAttributes extends Optional<DespesaAttributes, "despesaId" | "data_criacao"> {}
+interface DespesaCreationAttributes
+  extends Optional<DespesaAttributes, "despesaId" | "data_criacao"> {}
 
 class Despesa extends Model<DespesaAttributes, DespesaCreationAttributes> {
   public despesaId!: number;

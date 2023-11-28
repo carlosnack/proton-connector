@@ -1,4 +1,5 @@
 import DespesaRepository from "../repositories/DespesaRepository";
+import { SearchPeriodoProps } from "../repositories/VendaRepository";
 import { HttpError } from "../utils/httpError";
 
 export default class DespesaService {
@@ -8,7 +9,12 @@ export default class DespesaService {
     data_vencimento: Date,
     status: boolean = false
   ) {
-    return DespesaRepository.criarDespesa(descricao, valor, data_vencimento, status);
+    return DespesaRepository.criarDespesa(
+      descricao,
+      valor,
+      data_vencimento,
+      status
+    );
   }
 
   static async buscarDespesa(descricao?: string) {
@@ -38,11 +44,13 @@ export default class DespesaService {
     return await DespesaRepository.deletarDespesa(despesaId);
   }
 
-  static async buscarDespesasPorIntervalo(
-    dataCriacao?: Date,
-    dataVencimento?: Date,
-    status?: boolean
-  ) {
-    return DespesaRepository.buscarDespesasPorIntervalo(dataCriacao, dataVencimento, status);
+  static async buscarDespesasPorIntervalo({
+    dataInicio,
+    dataFim,
+  }: SearchPeriodoProps) {
+    return DespesaRepository.buscarDespesasPorIntervalo({
+      dataInicio,
+      dataFim,
+    });
   }
 }

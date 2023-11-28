@@ -1,5 +1,7 @@
 import { Transaction } from "sequelize";
 import VendaProduto from "../models/VendaProduto";
+import { SearchPeriodoProps } from "./VendaRepository";
+import { Op } from "sequelize";
 
 interface VendaProdutosToInsertProps {
   produtoId: number;
@@ -27,5 +29,20 @@ export default class VendaProdutoRepository {
     );
 
     return { vendasProdutosCreated, results };
+  }
+
+  static async buscarVendasProdutosPeriodo({
+    dataInicio,
+    dataFim,
+  }: SearchPeriodoProps) {
+    const vendasProdutos = await VendaProduto.findAll({
+      where: {
+        createdAt: {
+          [Op.between]: [dataInicio, dataFim],
+        },
+      },
+    });
+
+    return vendasProdutos;
   }
 }
