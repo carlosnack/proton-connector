@@ -1,3 +1,4 @@
+import { Transaction } from "sequelize";
 import NotaFiscal, { NotaFiscalStatus } from "../models/NotaFiscal";
 export interface UpdateNotaFiscalProps {
   valor?: number;
@@ -8,9 +9,10 @@ export interface UpdateNotaFiscalProps {
 export default class NotaFiscalRepository {
   static async criarNotaFiscal(
     valor: number,
-    dataEmissao: Date
+    dataEmissao: Date,
+    transaction?: Transaction
   ): Promise<NotaFiscal> {
-    return NotaFiscal.create({ valor, dataEmissao });
+    return NotaFiscal.create({ valor, dataEmissao }, { transaction });
   }
 
   static async atualizarNotaFiscal(

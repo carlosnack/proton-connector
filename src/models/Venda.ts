@@ -1,10 +1,5 @@
 import { Model, DataTypes, Optional, Association } from "sequelize";
 import sequelize from "../config/sequelize";
-import NotaFiscal from "./NotaFiscal";
-import Cliente from "./Cliente";
-import Pagamento from "./Pagamento";
-import Entrega from "./Entrega";
-import Produto from "./Produto";
 import VendaProduto from "./VendaProduto";
 
 interface VendaAttributes {

@@ -1,4 +1,4 @@
-import { Op } from "sequelize";
+import { Op, Transaction } from "sequelize";
 import Pagamento, {
   PagamentoMetodoEnum,
   PagamentoStatusEnum,
@@ -12,8 +12,11 @@ interface UpdatePagamentoProps {
 }
 
 export default class PagamentoRepository {
-  static async criarPagamento(metodoPagamento: PagamentoMetodoEnum) {
-    return Pagamento.create({ metodoPagamento });
+  static async criarPagamento(
+    metodoPagamento: PagamentoMetodoEnum,
+    transaction?: Transaction
+  ) {
+    return Pagamento.create({ metodoPagamento }, { transaction });
   }
 
   static async acessarPagamento(

@@ -3,9 +3,14 @@ import ProdutoService from "../services/ProdutoService";
 
 export default class ProdutoController {
   static async criarProduto(req: Request, res: Response) {
-    const { nome, descricao, preco } = req.body;
+    const { nome, descricao, preco, quantidadeEstoque } = req.body;
 
-    const produto = await ProdutoService.criarProduto(nome, descricao, preco);
+    const produto = await ProdutoService.criarProduto(
+      nome,
+      descricao,
+      preco,
+      quantidadeEstoque
+    );
 
     return res.status(201).json(produto);
   }
@@ -27,9 +32,13 @@ export default class ProdutoController {
 
   static async atualizarProduto(req: Request, res: Response) {
     const { produtoId } = req.params as Record<string, any>;
-    const body = req.body as Record<string, any>;
+    const { quantidadeEstoque, ...body } = req.body as Record<string, any>;
 
-    const produto = await ProdutoService.atualizarProduto(produtoId, body);
+    const produto = await ProdutoService.atualizarProduto(
+      produtoId,
+      body,
+      quantidadeEstoque
+    );
 
     return res.status(200).json(produto);
   }
