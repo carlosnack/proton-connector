@@ -18,15 +18,16 @@ export default class PagamentoController {
     const { token } = req.params as Record<string, any>;
     const decoded = JwtService.decode<PagamentoTokenProps>(token);
 
-    const [_, [pagamentoObject]] = await PagamentoService.efetuarPagamento(
+    const venda = await PagamentoService.efetuarPagamento(
       decoded.pagamentoId,
       PagamentoStatusEnum.APROVADO,
-      new Date()
+      new Date(),
+      decoded.vendaId
     );
 
     return res.status(200).json({
       message: "Pagamento realizado com sucesso",
-      pagamento: pagamentoObject.dataValues,
+      venda,
     });
   }
 
@@ -35,11 +36,9 @@ export default class PagamentoController {
     const { token } = req.params as Record<string, any>;
     const decoded = JwtService.decode<PagamentoTokenProps>(token);
 
-    const pagamento = await PagamentoService.acessarPagamento(
-      decoded.pagamentoId
-    );
+    const dadosVenda = await VendaService.acessarVenda(decoded.vendaId);
 
-    return res.status(209).json(pagamento);
+    return res.status(209).json(dadosVenda);
   }
   static async buscarPagamentos(req: Request, res: Response) {
     const { status } = req.query as Record<string, any>;

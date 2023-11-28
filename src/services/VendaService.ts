@@ -110,4 +110,8 @@ export default class VendaService {
   static async buscarVenda() {
     return VendaRepository.buscarVenda();
   }
+
+  static async acessarVenda(vendaId: number) {
+    return VendaRepository.acessarVenda(vendaId);
+  }
 }
