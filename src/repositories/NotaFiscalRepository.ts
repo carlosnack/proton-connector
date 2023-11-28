@@ -2,6 +2,7 @@ import NotaFiscal, { NotaFiscalStatus } from "../models/NotaFiscal";
 export interface UpdateNotaFiscalProps {
   valor?: number;
   dataEmissao?: Date;
+  arquivoId?: number;
   status?: NotaFiscalStatus;
 }
 export default class NotaFiscalRepository {
@@ -14,8 +15,11 @@ export default class NotaFiscalRepository {
 
   static async atualizarNotaFiscal(
     notaFiscalId: number,
-    { status }: UpdateNotaFiscalProps
+    { status, dataEmissao, arquivoId }: UpdateNotaFiscalProps
   ) {
-    return NotaFiscal.update({ status }, { where: { notaFiscalId } });
+    return NotaFiscal.update(
+      { status, dataEmissao, arquivoId },
+      { where: { notaFiscalId } }
+    );
   }
 }

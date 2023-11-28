@@ -31,7 +31,6 @@ export default class PagamentoController {
     });
   }
 
-  // TODO: Trazer a venda ao acessar o pagamento
   static async acessarPagamento(req: Request, res: Response) {
     const { token } = req.params as Record<string, any>;
     const decoded = JwtService.decode<PagamentoTokenProps>(token);

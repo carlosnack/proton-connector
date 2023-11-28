@@ -1,7 +1,7 @@
 import Mail from "nodemailer/lib/mailer";
 import { transporter } from "../config/nodemailer";
 
-interface SendMailProps {
+export interface SendMailProps {
   from: string;
   to: string;
   subject: string;

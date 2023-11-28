@@ -1,13 +1,14 @@
-import { SendMailOptions } from "nodemailer";
 import sequelize from "../config/sequelize";
 import { NotaFiscalStatus } from "../models/NotaFiscal";
 import { PagamentoMetodoEnum, PagamentoStatusEnum } from "../models/Pagamento";
 import PagamentoRepository from "../repositories/PagamentoRepository";
 import { HttpError } from "../utils/httpError";
-import MailService from "./MailService";
 import NotaFiscalService from "./NotaFiscalService";
 import VendaService from "./VendaService";
-
+import { fileToSaveFolderPath } from "../utils/file";
+import { nanoid } from "../utils/nanoid";
+import ArquivoService from "./ArquivoService";
+import MailService, { SendMailProps } from "./MailService";
 export default class PagamentoService {
   static async criarPagamento(metodoPagamento: PagamentoMetodoEnum) {
     return PagamentoRepository.criarPagamento(metodoPagamento);
@@ -27,7 +28,10 @@ export default class PagamentoService {
       throw new HttpError(400, "Esse pagamento já foi aprovado");
     }
 
-    const venda = await VendaService.acessarVenda(vendaId);
+    const venda = (await VendaService.acessarVenda(vendaId)) as Record<
+      string,
+      any
+    >;
     if (!venda) {
       throw new HttpError(
         400,
@@ -42,16 +46,57 @@ export default class PagamentoService {
       dataPagamento,
     });
 
-    //TODO generate pdf nota fiscal
-    await NotaFiscalService.atualizarNotaFiscal(venda.notaFiscalId, {
-      status: NotaFiscalStatus.EMITIDA,
+    const produtos = venda.produtos.map((produtoVenda: any) => ({
+      preco: produtoVenda.VendaProduto.precoUnitario,
+      quantidade: produtoVenda.VendaProduto.quantidade,
+      nome: produtoVenda.nome,
+    }));
+
+    const valorTotal = VendaService.somarPrecos(produtos);
+
+    const dataEmissao = new Date();
+
+    const notaFiscalArquivo = await NotaFiscalService.gerarPdfNotaFiscal({
+      valorTotal,
+      produtos,
+      dataEmissao,
+      nomeCliente: venda.cliente.nome,
+      notaId: venda.notaFiscalId,
     });
 
-    // TODO: Send NF to email after genate pdf and update NF status
-    // await MailService.sendMail(mailOptions);
+    const nomeArquivo = nanoid();
+    const caminho = fileToSaveFolderPath(nomeArquivo);
+
+    const arquivoCreated = await ArquivoService.criarArquivo(
+      nomeArquivo,
+      caminho,
+      notaFiscalArquivo
+    );
+
+    await NotaFiscalService.atualizarNotaFiscal(venda.notaFiscalId, {
+      status: NotaFiscalStatus.EMITIDA,
+      dataEmissao,
+      arquivoId: arquivoCreated.arquivoId,
+    });
+
+    const mailOptions: SendMailProps = {
+      from: "no-reply@proton.com",
+      to: venda.cliente.email,
+      subject: `Nota Fiscal Eletrônica - nº ${venda.notaFiscalId}`,
+      text: `Olá ${venda.cliente.nome}, aqui está o link para acessar sua nota fiscal online:  ${process.env.API_URL}/arquivos/${arquivoCreated.arquivoId}`,
+      attachments: [
+        {
+          filename: arquivoCreated.nome,
+          path: arquivoCreated.caminho,
+          contentType: "application/pdf",
+        },
+      ],
+    };
+
+    await MailService.sendMail(mailOptions);
 
     await t.commit();
-    return venda;
+    return venda.reload();
   }
 
   static async acessarPagamento(pagamentoId: number) {

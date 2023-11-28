@@ -18,7 +18,7 @@ interface CriarVendaPagamentoProps {
   metodo: PagamentoMetodoEnum;
 }
 export default class VendaService {
-  private static somarPrecos(produtos: any[]) {
+  public static somarPrecos(produtos: any[]) {
     const totalDecimal: Decimal = produtos.reduce((total, produto) => {
       const preco = new Decimal(produto.preco || 0);
       const quantidade = new Decimal(produto.quantidade || 1);
