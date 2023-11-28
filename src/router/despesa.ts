@@ -29,9 +29,9 @@ router.get(
   endpoint(DespesaController.acessarDespesa)
 );
 
-router.patch(
-  "/despesas/:despesaId",
-  params(acessarDespesaValidation),
+router.put(
+  "/despesas/",
+  query(acessarDespesaValidation),
   body(atualizarDespesaValidation),
   endpoint(DespesaController.atualizarDespesa)
 );

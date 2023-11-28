@@ -25,7 +25,7 @@ export default class DespesaController {
   }
 
   static async atualizarDespesa(req: Request, res: Response) {
-    const { despesaId } = req.params as Record<string, any>;
+    const { despesaId } = req.query as Record<string, any>;
     const body = req.body as Record<string, any>;
 
     const despesa = await DespesaService.atualizarDespesa(despesaId, body);

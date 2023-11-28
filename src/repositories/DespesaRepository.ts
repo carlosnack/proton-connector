@@ -18,7 +18,8 @@ export default class DespesaRepository {
   }
 
   static async acessarDespesa(despesaId: number): Promise<Despesa | null> {
-    return Despesa.findByPk(despesaId);
+    const despesas =  await Despesa.findAll({where: {despesaId}});
+    return despesas[0];
   }
 
   static async atualizarDespesa(

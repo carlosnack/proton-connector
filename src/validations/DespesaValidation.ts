@@ -8,9 +8,8 @@ export const criarDespesaValidation = Joi.object({
 }).required();
 
 export const buscarDespesasValidation = Joi.object({
-  descricao: Joi.string(),
-  dataCriacao: Joi.date(),
-  dataVencimento: Joi.date(),
+  descricao: Joi.string().optional(),
+  dataVencimento: Joi.date().optional(),
   status: Joi.boolean().optional(), 
 }).required();
 
