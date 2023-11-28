@@ -1,6 +1,23 @@
 version: "3.8"
 
+networks:
+  api_network:
+
 services:
+  api:
+    build: .
+    env_file:
+      - .env
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    ports:
+      - $PORT:$PORT
+    restart: always
+    networks:
+      - api_network
+
   postgres:
     image: postgres:alpine
     command: -p $POSTGRES_PORT
@@ -18,3 +35,5 @@ services:
     restart: always
     volumes:
       - ./data:/var/lib/postgresql/data
+    networks:
+      - api_network
