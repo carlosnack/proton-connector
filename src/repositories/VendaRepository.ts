@@ -1,4 +1,3 @@
-import NotaFiscal from "../models/NotaFiscal";
 import Venda from "../models/Venda";
 
 export default class VendaRepository {
@@ -20,6 +19,12 @@ export default class VendaRepository {
 
   static buscarVenda() {
     return Venda.findAll({
+      include: ["notaFiscal", "cliente", "pagamento", "entrega", "produtos"],
+    });
+  }
+
+  static async acessarVenda(vendaId: number) {
+    return Venda.findByPk(vendaId, {
       include: ["notaFiscal", "cliente", "pagamento", "entrega", "produtos"],
     });
   }

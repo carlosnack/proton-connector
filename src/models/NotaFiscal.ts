@@ -1,5 +1,6 @@
 import { Model, DataTypes, Optional } from "sequelize";
 import sequelize from "../config/sequelize";
+import Arquivo from "./Arquivo";
 
 export enum NotaFiscalStatus {
   PENDENTE = "PENDENTE",
@@ -9,9 +10,10 @@ export enum NotaFiscalStatus {
 
 interface NotaFiscalAttributes {
   notaFiscalId: number;
-  dataEmissao: Date;
+  dataEmissao?: Date;
   valor: number;
   status?: NotaFiscalStatus;
+  arquivoId?: number;
   deleted?: boolean;
 }
 
@@ -26,8 +28,15 @@ class NotaFiscal
   public dataEmissao!: Date;
   public valor!: number;
   public status!: NotaFiscalStatus;
+  public arquivoId!: number;
   public deleted!: boolean;
   // Aqui você define os relacionamentos e configurações do modelo
+  public static associate(models: any): void {
+    NotaFiscal.hasOne(Arquivo, {
+      foreignKey: "notaFiscalId",
+      as: "arquivo",
+    });
+  }
 }
 
 NotaFiscal.init(
@@ -37,9 +46,13 @@ NotaFiscal.init(
       primaryKey: true,
       autoIncrement: true,
     },
+    arquivoId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
     dataEmissao: {
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull: true,
     },
     valor: {
       type: DataTypes.DECIMAL(10, 2),
