@@ -34,8 +34,6 @@ export default class VendaService {
     produtos: CriarVendaProdutosProps,
     pagamento: CriarVendaPagamentoProps
   ) {
-    const t = await sequelize.transaction();
-
     const produtosFound = await Promise.all(
       produtos.map(async (prod) => {
         const produto = await ProdutoService.acessarProduto(prod.produtoId);
@@ -54,28 +52,34 @@ export default class VendaService {
 
     const valorVenda = this.somarPrecos(produtosFound);
 
+    const transaction = await sequelize.transaction();
+
     const notaFiscalCreated = await NotaFiscalService.criarNotaFiscal(
       valorVenda,
-      new Date()
+      new Date(),
+      transaction
     );
 
     const pagamentoCreated = await PagamentoService.criarPagamento(
-      pagamento.metodo
+      pagamento.metodo,
+      transaction
     );
 
-    const entregaCreated = await EntregaService.criarEntrega();
+    const entregaCreated = await EntregaService.criarEntrega(transaction);
 
     const venda = await VendaRepository.criarVenda(
       cliente.clienteId,
       pagamentoCreated.pagamentoId,
       notaFiscalCreated.notaFiscalId,
       entregaCreated.entregaId,
-      new Date()
+      new Date(),
+      transaction
     );
 
     await VendaProdutoService.criarVendaProdutos(
       venda.vendaId,
-      produtosFound as any
+      produtosFound as any,
+      transaction
     );
 
     const token = JwtService.generateTokenObject({
@@ -95,7 +99,7 @@ export default class VendaService {
 
     await MailService.sendMail(mailOptions);
 
-    await t.commit();
+    await transaction.commit();
 
     return { venda, valorTotal: valorVenda };
   }

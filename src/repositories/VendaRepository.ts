@@ -1,3 +1,4 @@
+import { Transaction } from "sequelize";
 import Venda from "../models/Venda";
 
 export default class VendaRepository {
@@ -6,15 +7,19 @@ export default class VendaRepository {
     pagamentoId: number,
     notaFiscalId: number,
     entregaId: number,
-    dataVenda: Date
+    dataVenda: Date,
+    transaction?: Transaction
   ): Promise<Venda> {
-    return Venda.create({
-      clienteId,
-      pagamentoId,
-      notaFiscalId,
-      entregaId,
-      dataVenda,
-    });
+    return Venda.create(
+      {
+        clienteId,
+        pagamentoId,
+        notaFiscalId,
+        entregaId,
+        dataVenda,
+      },
+      { transaction }
+    );
   }
 
   static buscarVenda() {

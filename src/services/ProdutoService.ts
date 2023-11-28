@@ -1,9 +1,25 @@
 import ProdutoRepository from "../repositories/ProdutoRepository";
 import { HttpError } from "../utils/httpError";
+import EstoqueService from "./EstoqueService";
 
-export default class ProdutoService {
-  static async criarProduto(nome: string, descricao: string, preco: number) {
-    return ProdutoRepository.criarProduto(nome, descricao, preco);
+export default class ProdutoService extends EstoqueService {
+  static async criarProduto(
+    nome: string,
+    descricao: string,
+    preco: number,
+    quantidadeEstoque: number
+  ) {
+    const produtoCreated = await ProdutoRepository.criarProduto(
+      nome,
+      descricao,
+      preco
+    );
+    await this.criarRegistroDeEstoque(
+      produtoCreated.produtoId,
+      quantidadeEstoque
+    );
+
+    return produtoCreated;
   }
 
   static async buscarProduto(nome?: string) {
@@ -20,11 +36,16 @@ export default class ProdutoService {
 
   static async atualizarProduto(
     produtoId: number,
-    updateInfo: Record<string, any>
+    updateInfo: Record<string, any>,
+    quantidadeEstoque?: number
   ) {
-    await this.acessarProduto(produtoId);
+    const produto = await this.acessarProduto(produtoId);
     await ProdutoRepository.atualizarProduto(produtoId, updateInfo);
 
-    return await this.acessarProduto(produtoId);
+    if (quantidadeEstoque) {
+      await this.atualizarEstoque(produto.produtoId, quantidadeEstoque);
+    }
+
+    return produto.reload();
   }
 }

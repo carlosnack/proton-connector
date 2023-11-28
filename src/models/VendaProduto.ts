@@ -1,5 +1,7 @@
-import { Model, DataTypes, Optional } from "sequelize";
+import { Model, DataTypes, Optional, Transaction } from "sequelize";
 import sequelize from "../config/sequelize";
+import Produto from "./Produto";
+import Estoque from "./Estoque";
 
 interface VendaProdutoAttributes {
   vendaProdutoId: number;
@@ -27,6 +29,23 @@ class VendaProduto
   static associate(models: any): void {
     VendaProduto.belongsTo(models.Produto, { foreignKey: "produtoId" });
     VendaProduto.belongsTo(models.Venda, { foreignKey: "vendaId" });
+  }
+
+  static async baixaEstoque(
+    vendasProdutos: VendaProduto[],
+    transaction?: Transaction
+  ) {
+    const promises = vendasProdutos.map(async (vendaProduto) => {
+      return Estoque.baixaEstoque(
+        vendaProduto.produtoId,
+        vendaProduto.quantidade,
+        transaction
+      );
+    });
+
+    const result = await Promise.all(promises);
+
+    return result;
   }
 }
 
@@ -57,7 +76,7 @@ VendaProduto.init(
       },
     },
     precoUnitario: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
       validate: {
         isNonNegative(value: number) {
@@ -78,6 +97,10 @@ VendaProduto.init(
   {
     sequelize,
     modelName: "VendaProduto",
+    // hooks: {
+    //   afterBulkCreate: async (vendasProdutos) => {
+    //   },
+    // },
   }
 );
 

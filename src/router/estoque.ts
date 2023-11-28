@@ -2,15 +2,16 @@ import { Router } from "express";
 import { query } from "../utils/requestsValidations";
 import { buscarEstoqueValidation } from "../validations/EstoqueValidation";
 import EstoqueController from "../controllers/EstoqueController";
+import { endpoint } from "../utils/endpoint";
 
 const router = Router();
 
 router.get(
-  "/estoque",
+  "/estoques",
   query(buscarEstoqueValidation),
-  EstoqueController.buscarEstoque
+  endpoint(EstoqueController.buscarEstoque)
 );
-router.delete("/estoque", EstoqueController.deletarEstoque);
-router.post("/estoque", EstoqueController.criarRegistroDeEstoque);
+
+router.delete("/estoques", endpoint(EstoqueController.deletarEstoque));
 
 export default router;

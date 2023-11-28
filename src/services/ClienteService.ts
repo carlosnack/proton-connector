@@ -44,9 +44,9 @@ export default class ClienteService {
     clienteId: number,
     updateInfo: Record<string, any>
   ) {
-    await this.acessarCliente(clienteId);
+    const cliente = await this.acessarCliente(clienteId);
     await ClienteRepository.atualizarCliente(clienteId, updateInfo);
 
-    return await this.acessarCliente(clienteId);
+    return cliente.reload();
   }
 }

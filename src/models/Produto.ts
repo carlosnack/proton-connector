@@ -1,6 +1,7 @@
 import { Model, DataTypes, Optional } from "sequelize";
 import sequelize from "../config/sequelize";
 import VendaProduto from "./VendaProduto";
+import Estoque from "./Estoque";
 
 interface ProdutoAttributes {
   produtoId: number;

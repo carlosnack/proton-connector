@@ -3,6 +3,7 @@ import NotaFiscalRepository, {
   UpdateNotaFiscalProps,
 } from "../repositories/NotaFiscalRepository";
 import { NotaFiscalStatus } from "../models/NotaFiscal";
+import { Transaction } from "sequelize";
 
 interface GerarPdfNotaFiscalProps {
   nomeCliente: string;
@@ -14,8 +15,16 @@ interface GerarPdfNotaFiscalProps {
 }
 
 export default class NotaFiscalService {
-  static async criarNotaFiscal(valor: number, dataEmissao: Date) {
-    return NotaFiscalRepository.criarNotaFiscal(valor, dataEmissao);
+  static async criarNotaFiscal(
+    valor: number,
+    dataEmissao: Date,
+    transaction?: Transaction
+  ) {
+    return NotaFiscalRepository.criarNotaFiscal(
+      valor,
+      dataEmissao,
+      transaction
+    );
   }
 
   static async gerarPdfNotaFiscal({

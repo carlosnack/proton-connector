@@ -9,9 +9,14 @@ import { fileToSaveFolderPath } from "../utils/file";
 import { nanoid } from "../utils/nanoid";
 import ArquivoService from "./ArquivoService";
 import MailService, { SendMailProps } from "./MailService";
+import { Transaction } from "sequelize";
+
 export default class PagamentoService {
-  static async criarPagamento(metodoPagamento: PagamentoMetodoEnum) {
-    return PagamentoRepository.criarPagamento(metodoPagamento);
+  static async criarPagamento(
+    metodoPagamento: PagamentoMetodoEnum,
+    transaction?: Transaction
+  ) {
+    return PagamentoRepository.criarPagamento(metodoPagamento, transaction);
   }
 
   static async efetuarPagamento(
