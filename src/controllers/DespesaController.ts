@@ -5,15 +5,24 @@ export default class DespesaController {
   static async criarDespesa(req: Request, res: Response) {
     const { descricao, valor, data_vencimento, status } = req.body;
 
-    const despesa = await DespesaService.criarDespesa(descricao, valor, data_vencimento, status);
+    const despesa = await DespesaService.criarDespesa(
+      descricao,
+      valor,
+      data_vencimento,
+      status
+    );
 
     return res.status(201).json(despesa);
   }
 
   static async buscarDespesas(req: Request, res: Response) {
-    const { descricao, dataCriacao, dataVencimento, status } = req.query as Record<string, any>;
+    const { descricao, dataCriacao, dataVencimento, status } =
+      req.query as Record<string, any>;
 
-    const despesas = await DespesaService.buscarDespesasPorIntervalo(dataCriacao, dataVencimento, status);
+    const despesas = await DespesaService.buscarDespesasPorIntervalo({
+      dataInicio: dataCriacao,
+      dataFim: dataVencimento,
+    });
     return res.status(200).json({ despesas });
   }
 

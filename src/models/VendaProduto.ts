@@ -10,6 +10,8 @@ interface VendaProdutoAttributes {
   quantidade: number;
   precoUnitario: number;
   deleted?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 interface VendaProdutoCreationAttributes

@@ -1,5 +1,11 @@
 import { Transaction } from "sequelize";
 import Venda from "../models/Venda";
+import { Op } from "sequelize";
+
+export interface SearchPeriodoProps {
+  dataInicio: Date;
+  dataFim: Date;
+}
 
 export default class VendaRepository {
   static async criarVenda(
@@ -32,5 +38,20 @@ export default class VendaRepository {
     return Venda.findByPk(vendaId, {
       include: ["notaFiscal", "cliente", "pagamento", "entrega", "produtos"],
     });
+  }
+
+  static async acessarVendasPeriodo({
+    dataInicio,
+    dataFim,
+  }: SearchPeriodoProps) {
+    const vendas = await Venda.findAll({
+      where: {
+        createdAt: {
+          [Op.between]: [dataInicio, dataFim],
+        },
+      },
+    });
+
+    return vendas;
   }
 }

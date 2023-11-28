@@ -1,5 +1,6 @@
 import { Op } from "sequelize";
 import Despesa from "../models/Despesa";
+import { SearchPeriodoProps } from "./VendaRepository";
 
 export default class DespesaRepository {
   static async criarDespesa(
@@ -8,17 +9,25 @@ export default class DespesaRepository {
     data_vencimento: Date,
     status: boolean = false
   ): Promise<Despesa> {
-    return Despesa.create({ descricao, valor, data_vencimento, status, data_criacao: new Date() });
+    return Despesa.create({
+      descricao,
+      valor,
+      data_vencimento,
+      status,
+      data_criacao: new Date(),
+    });
   }
 
   static async buscarDespesa(descricao?: string): Promise<Despesa[]> {
-    const condition = descricao ? { descricao: { [Op.like]: `%${descricao}%` } } : {};
+    const condition = descricao
+      ? { descricao: { [Op.like]: `%${descricao}%` } }
+      : {};
 
     return Despesa.findAll({ where: condition });
   }
 
   static async acessarDespesa(despesaId: number): Promise<Despesa | null> {
-    const despesas =  await Despesa.findAll({where: {despesaId}});
+    const despesas = await Despesa.findAll({ where: { despesaId } });
     return despesas[0];
   }
 
@@ -38,24 +47,19 @@ export default class DespesaRepository {
       where: { despesaId },
     });
   }
-  
-  static async buscarDespesasPorIntervalo(
-    dataCriacao?: Date,
-    dataVencimento?: Date,
-    status: boolean = false
-  ): Promise<{ total: number }> {
-    const condition: any = {
-      status, // Utiliza o status passado como condição
-    };
-  
-    if (dataCriacao) condition.data_criacao = { [Op.gte]: dataCriacao };
-    if (dataVencimento) condition.data_vencimento = { [Op.lte]: dataVencimento };
-  
-    const total = await Despesa.sum('valor', { where: condition });
-  
+
+  static async buscarDespesasPorIntervalo({
+    dataInicio,
+    dataFim,
+  }: SearchPeriodoProps): Promise<{ total: number }> {
+    const total = await Despesa.sum("valor", {
+      where: {
+        createdAt: {
+          [Op.between]: [dataInicio, dataFim],
+        },
+      },
+    });
+
     return { total: total || 0 };
   }
-  
-  
-
 }

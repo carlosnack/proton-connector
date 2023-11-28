@@ -7,7 +7,9 @@ import ProdutoService from "./ProdutoService";
 import PagamentoService from "./PagamentoService";
 import { PagamentoMetodoEnum } from "../models/Pagamento";
 import EntregaService from "./EntregaService";
-import VendaRepository from "../repositories/VendaRepository";
+import VendaRepository, {
+  SearchPeriodoProps,
+} from "../repositories/VendaRepository";
 import VendaProdutoService from "./VendaProdutoService";
 import sequelize from "../config/sequelize";
 import MailService from "./MailService";
@@ -110,5 +112,12 @@ export default class VendaService {
 
   static async acessarVenda(vendaId: number) {
     return VendaRepository.acessarVenda(vendaId);
+  }
+
+  static async acessarVendasPeriodo({
+    dataInicio,
+    dataFim,
+  }: SearchPeriodoProps) {
+    return VendaRepository.acessarVendasPeriodo({ dataInicio, dataFim });
   }
 }

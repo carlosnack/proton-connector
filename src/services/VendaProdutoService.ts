@@ -2,6 +2,7 @@ import { Transaction } from "sequelize";
 import Produto from "../models/Produto";
 import VendaProdutoRepository from "../repositories/VendaProdutoRepository";
 import { HttpError } from "../utils/httpError";
+import { SearchPeriodoProps } from "../repositories/VendaRepository";
 type Produtos<T> = Partial<T> & { quantidade: number };
 
 export default class VendaProdutoService {
@@ -31,5 +32,15 @@ export default class VendaProdutoService {
         filtered as any
       );
     }
+  }
+
+  static async buscarVendasProdutosPeriodo({
+    dataInicio,
+    dataFim,
+  }: SearchPeriodoProps) {
+    return VendaProdutoRepository.buscarVendasProdutosPeriodo({
+      dataInicio,
+      dataFim,
+    });
   }
 }
