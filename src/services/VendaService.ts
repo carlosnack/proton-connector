@@ -1,7 +1,6 @@
 import { isNull } from "lodash";
 import { HttpError } from "../utils/httpError";
 import NotaFiscalService from "./NotaFiscalService";
-import Produto from "../models/Produto";
 import Decimal from "decimal.js";
 import ClienteService from "./ClienteService";
 import ProdutoService from "./ProdutoService";
@@ -10,6 +9,9 @@ import { PagamentoMetodoEnum } from "../models/Pagamento";
 import EntregaService from "./EntregaService";
 import VendaRepository from "../repositories/VendaRepository";
 import VendaProdutoService from "./VendaProdutoService";
+import sequelize from "../config/sequelize";
+import MailService from "./MailService";
+import JwtService from "./JwtService";
 
 type CriarVendaProdutosProps = { produtoId: number; quantidade: number }[];
 interface CriarVendaPagamentoProps {
@@ -33,11 +35,13 @@ export default class VendaService {
     pagamento: CriarVendaPagamentoProps
   ) {
     /**
-     * TODO: Gerar Nota fiscal
+     * TODO: Gerar Nota fiscal(Isso vai ficar no pagamento)
      * TODO: Enviar email com nota fiscal
      * TODO: Enviar email com método de pagamento para o cliente
      * TODO: Criar rota na API para processar o pagamento
      */
+
+    const t = await sequelize.transaction();
 
     const produtosFound = await Promise.all(
       produtos.map(async (prod) => {
@@ -80,6 +84,25 @@ export default class VendaService {
       venda.vendaId,
       produtosFound as any
     );
+
+    const token = JwtService.generateTokenObject({
+      clienteId: cliente.clienteId,
+      email: cliente.email,
+      nome: cliente.nome,
+      pagamentoId: pagamentoCreated.pagamentoId,
+      vendaId: venda.vendaId,
+    });
+
+    const mailOptions = {
+      from: "no-reply@proton.com",
+      to: "vinicius.prado@unesp.br",
+      subject: "Sua compra foi registrada",
+      text: `Olá seu pedido foi registrado, para acessar e efetuar o pagamento basta seguir o seguinte link: ${process.env.API_URL}/pagamentos/${token}`,
+    };
+
+    await MailService.sendMail(mailOptions);
+
+    await t.commit();
 
     return { venda, valorTotal: valorVenda };
   }

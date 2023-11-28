@@ -4,7 +4,10 @@ declare namespace NodeJS {
     NODE_ENV: "development" | "test" | "production" | "staging";
     PORT: string;
 
-    //Cep Api
+    // Api
+    API_URL: string;
+
+    // Cep Api
     CEP_API_TOKEN: string;
 
     // Banco de dados
@@ -12,5 +15,13 @@ declare namespace NodeJS {
     POSTGRES_USER: string;
     POSTGRES_PASSWORD: string;
     POSTGRES_DB: string;
+
+    // Email
+    MAILER_EMAIL: string;
+    MAILER_PASSWORD: string;
+
+    // JWT
+    JWT_SECRET: string;
+    TOKEN_LIFE: string;
   }
 }
