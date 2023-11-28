@@ -1,10 +1,12 @@
 // controller/EstoqueController.ts
 import { Request, Response } from 'express'
 import { validationResult } from 'express-validator'
-import EstoqueService from '../services/EstoqueService' // Importe o serviço EstoqueService corretamente
+import EstoqueService from '../services/EstoqueService'
+import { decodeToken } from '../utils/decodeToken'
+import * as jwt from 'jsonwebtoken'
+import { json } from 'sequelize'
 
 export default class EstoqueController {
-  //PARA EU DO FUTURO: REVISAR RETORNOS DE ERROS
   static async buscarEstoque(req: Request, res: Response) {
     const errors = validationResult(req)
 
@@ -46,6 +48,9 @@ export default class EstoqueController {
   }
 
   static async criarRegistroDeEstoque(req: Request, res: Response) {
+    console.log(req.headers.authorization);
+    const a = decodeToken(req.headers.authorization as string);
+    console.log(a);
     const { estoqueId, produtoId, quantidade } = req.query
 
     try {
