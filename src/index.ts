@@ -13,7 +13,7 @@ Object.values(sequelize.models).forEach((model: any) => {
   }
 });
 sequelize
-  .sync({ force: true })
+  .sync()
   .then(() => {
     console.log("Tabelas sincronizadas");
     app.listen(port, () =>
