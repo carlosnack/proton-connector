@@ -95,7 +95,7 @@ export default class VendaService {
 
     const mailOptions = {
       from: "no-reply@proton.com",
-      to: "vinicius.prado@unesp.br",
+      to: cliente.email,
       subject: "Sua compra foi registrada",
       text: `Olá seu pedido foi registrado, para acessar e efetuar o pagamento basta seguir o seguinte link: ${process.env.API_URL}/pagamentos/${token}`,
     };

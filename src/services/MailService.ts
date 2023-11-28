@@ -1,3 +1,4 @@
+import Mail from "nodemailer/lib/mailer";
 import { transporter } from "../config/nodemailer";
 
 interface SendMailProps {
@@ -5,10 +6,17 @@ interface SendMailProps {
   to: string;
   subject: string;
   text: string;
+  attachments?: Mail.Attachment[];
 }
 
 export default class MailService {
-  static async sendMail({ from, to, subject, text }: SendMailProps) {
-    return await transporter.sendMail({ from, to, subject, text });
+  static async sendMail({
+    from,
+    to,
+    subject,
+    text,
+    attachments,
+  }: SendMailProps) {
+    return await transporter.sendMail({ from, to, subject, text, attachments });
   }
 }
