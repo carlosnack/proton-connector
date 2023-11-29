@@ -1,3 +1,10 @@
+# files
+files/*
+!files/.gitkeep
+
+#build
+build/
+
 # Logs
 logs
 *.log

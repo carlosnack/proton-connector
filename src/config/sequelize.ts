@@ -1,8 +1,22 @@
-import { Sequelize } from 'sequelize'
+import { Sequelize } from "sequelize";
 
-const sequelize = new Sequelize('mysql', 'root', 'sua_senha', {
-  host: 'localhost',
-  dialect: 'mysql',
-})
+const bdConfig: any = {
+  database: process.env.POSTGRES_DB,
+  user: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+};
 
-export default sequelize
+const sequelize = new Sequelize(
+  bdConfig.database,
+  bdConfig.user,
+  bdConfig.password,
+  {
+    host: "localhost",
+    dialect: "postgres",
+    dialectOptions: {
+      decimalNumbers: true,
+    },
+  }
+);
+
+export default sequelize;

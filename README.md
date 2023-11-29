@@ -4,7 +4,8 @@ Este é um projeto Proton Connector desenvolvido em Node.js e TypeScript, utiliz
 
 ## Requisitos
 
-- Node.js ([Instalar Node.js](https://nodejs.org/))
+- Node.js ([Instalar Node.js na versão 18](https://nodejs.org/))
+- Yarn ([Instalar yarn](https://yarnpkg.com/))
 - Docker ([Instalar Docker](https://www.docker.com/))
 - Docker Compose ([Instalar Docker Compose](https://docs.docker.com/compose/))
 
@@ -14,11 +15,18 @@ Este é um projeto Proton Connector desenvolvido em Node.js e TypeScript, utiliz
 
 Em seguida, execute o seguinte comando para iniciar os contêineres definidos no arquivo docker-compose.yml:
 
-docker-compose up -d
+```bash
+docker compose up -d
+```
 
-Executando o Projeto
-Para iniciar o servidor, execute:
+## Executando o Projeto
 
-npm run dev
+Para rodar o projeto você deve utilizar os seguintes comandos em sequencia
 
-O servidor estará acessível em http://localhost:3000.
+```bash
+yarn install
+
+yarn build
+
+yarn start
+```

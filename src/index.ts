@@ -1,19 +1,25 @@
-import express from 'express'
-import router from './router/router'
-import sequelize from './config/sequelize'
+import dotenv from "dotenv-safe";
+dotenv.config();
 
-const app = express()
-const port = 3000
-app.use('/api', router) // Use o controlador para a rota '/api/estoque'
+import sequelize from "./config/sequelize";
+import app from "./app";
 
+const port = process.env.PORT || 3000;
+
+// Isso é para fazer as relações dos modelos
+Object.values(sequelize.models).forEach((model: any) => {
+  if (model?.associate) {
+    model.associate(sequelize.models);
+  }
+});
 sequelize
   .sync()
   .then(() => {
-    console.log('Tabelas sincronizadas')
-    app.listen(port, () => {
-      console.log('Servidor rodando na porta 3000')
-    })
+    console.log("Tabelas sincronizadas");
+    app.listen(port, () =>
+      console.info(`🟢 Servidor ligado em http://localhost:${port}`)
+    );
   })
   .catch((error) => {
-    console.error('Erro ao sincronizar tabelas:', error)
-  })
+    console.error("Erro ao sincronizar tabelas:", error);
+  });
