@@ -16,7 +16,7 @@ Este é um projeto Proton Connector desenvolvido em Node.js e TypeScript, utiliz
 Em seguida, execute o seguinte comando para iniciar os contêineres definidos no arquivo docker-compose.yml:
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 ## Executando o Projeto
