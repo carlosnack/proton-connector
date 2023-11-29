@@ -27,9 +27,9 @@ export default class EstoqueController {
         produtoId as any as number,
         estoqueId as string
       );
-      res.json(resultado);
+      return res.json(resultado);
     } catch (error) {
-      res.status(500).json({ error: "Erro ao buscar estoque" });
+      return res.status(500).json({ error: "Erro ao buscar estoque" });
     }
   }
 
@@ -41,9 +41,9 @@ export default class EstoqueController {
         produtoId as any as number,
         quantidade as any as number
       );
-      res.json(resultado);
+      return res.json(resultado);
     } catch (error) {
-      res.status(500).json({ error: "Erro ao buscar estoque" });
+      return res.status(500).json({ error: "Erro ao buscar estoque" });
     }
   }
 }

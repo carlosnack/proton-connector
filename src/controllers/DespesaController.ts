@@ -16,8 +16,7 @@ export default class DespesaController {
   }
 
   static async buscarDespesas(req: Request, res: Response) {
-    const { descricao, dataCriacao, dataVencimento, status } =
-      req.query as Record<string, any>;
+    const { dataCriacao, dataVencimento } = req.query as Record<string, any>;
 
     const despesas = await DespesaService.buscarDespesasPorIntervalo({
       dataInicio: dataCriacao,
